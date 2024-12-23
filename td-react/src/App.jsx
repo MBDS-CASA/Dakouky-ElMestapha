@@ -13,6 +13,14 @@ function Header() {
   )
 }
 
+function MainContent() {
+  return (
+    <main style={{ textAlign: 'center', margin: '20px' }}>
+      <p>Ici, nous afficherons des informations intéressantes :)</p>
+    </main>
+  )
+}
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -23,7 +31,8 @@ function App() {
 
         <Header />  
 
-        
+        <MainContent />
+
       
       </div>
       
