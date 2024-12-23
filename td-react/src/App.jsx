@@ -14,17 +14,25 @@ function Header() {
 }
 
 function MainContent() {
+  const now = new Date();
+  const day = now.toLocaleDateString('fr-FR', { weekday: 'long' });
+  const month = now.toLocaleDateString('fr-FR', { month: 'long' });
+  const year = now.getFullYear();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+
   return (
     <main style={{ textAlign: 'center', margin: '20px' }}>
-      <p>Ici, nous afficherons des informations intéressantes :)</p>
+      <p>Bonjour, on est le {day}, {month}, {year} et il est {hours}:{minutes}:{seconds}</p>
     </main>
-  )
+  );
 }
 
 function Footer() {
   return (
     <footer style={{ textAlign: 'center', padding: '20px', position: 'fixed', bottom: '0', width: '100%' }}>
-    <p>Tous droits réservés - Dakouky El Mestapha</p>
+    <p>Tous droits réservés - Dakouky El Mstapha</p>
   </footer>
   )
 }
@@ -40,7 +48,7 @@ function App() {
         <MainContent />
 
         <Footer />
-      
+       
       </div>
       
     </>
