@@ -29,13 +29,18 @@ function MainContent() {
   );
 }
 
-function Footer() {
+function Footer({  }) {
+  const year = new Date().getFullYear();
+ let nom ="Dakouky"
+ let prenom = "El Mestapha"
   return (
     <footer style={{ textAlign: 'center', padding: '20px', position: 'fixed', bottom: '0', width: '100%' }}>
-    <p>Tous droits réservés - Dakouky El Mstapha</p>
-  </footer>
-  )
+      <p>© {year} - {prenom} {nom}, Tous droits réservés.</p>
+    </footer>
+  );
 }
+
+
 function App() {
   const [count, setCount] = useState(0)
 
