@@ -2,6 +2,9 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import data from './data.json';
+import './RandomItem.css';
+
 
 function Header() {
   return (
@@ -41,6 +44,38 @@ function Footer({  }) {
 }
 
 
+
+
+function getRandomItem(list) {
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+}
+
+function RandomItem() {
+  const [item, setItem] = useState(getRandomItem(data));
+
+  const changeItem = () => {
+    setItem(getRandomItem(data));
+  };
+
+  return (
+    <div className="card-container">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">{item.course}</h5>
+          <p className="card-text">
+            {item.student.firstname} {item.student.lastname} - {item.grade}%
+          </p>
+        </div>
+      </div>
+      <button className="btn-random" onClick={changeItem}>
+        Afficher un nouvel élément
+      </button>
+    </div>
+  );
+}
+
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -51,6 +86,8 @@ function App() {
         <Header />  
 
         <MainContent />
+
+        <RandomItem />
 
         <Footer />
        
