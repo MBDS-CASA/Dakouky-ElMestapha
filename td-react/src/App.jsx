@@ -3,8 +3,57 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import data from './data.json';
-import './RandomItem.css';
+import './styles.css';
 
+
+
+
+const NavMenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuItems = [
+    { name: 'Notes', icon: '📝' },
+    { name: 'Etudiants', icon: '👥' },
+    { name: 'Matières', icon: '📚' },
+    { name: 'A propos', icon: 'ℹ️' }
+  ];
+
+  const handleClick = (item) => {
+    alert(`Vous avez cliqué sur ${item}`);
+    setIsOpen(false); 
+  };
+
+  return (
+    <>
+      <div className="nav-container">
+        <button 
+          className={`hamburger-button ${isOpen ? 'active' : ''}`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+
+        <nav className={`nav-menu ${isOpen ? 'open' : ''}`}>
+          <ul className="menu-list">
+            {menuItems.map((item) => (
+              <li key={item.name} className="menu-item">
+                <button 
+                  onClick={() => handleClick(item.name)}
+                  className="menu-button"
+                >
+                  <span className="menu-icon">{item.icon}</span>
+                  <span className="menu-text">{item.name}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+      {isOpen && <div className="overlay" onClick={() => setIsOpen(false)}></div>}
+    </>
+  );
+};
 
 function Header() {
   return (
@@ -82,6 +131,9 @@ function App() {
   return (
     <>
       <div>
+
+
+      <NavMenu />
 
         <Header />  
 
