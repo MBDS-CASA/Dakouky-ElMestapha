@@ -21,7 +21,13 @@ function MainContent() {
   )
 }
 
-
+function Footer() {
+  return (
+    <footer style={{ textAlign: 'center', padding: '20px', position: 'fixed', bottom: '0', width: '100%' }}>
+    <p>Tous droits réservés - Dakouky El Mestapha</p>
+  </footer>
+  )
+}
 function App() {
   const [count, setCount] = useState(0)
 
@@ -33,6 +39,7 @@ function App() {
 
         <MainContent />
 
+        <Footer />
       
       </div>
       
