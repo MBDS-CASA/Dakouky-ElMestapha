@@ -1,59 +1,11 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import  NotesComponent from './components/NotesComponent';
+import  StudentsComponent from './components/StudentsComponent';
+import  SubjectsComponent from './components/SubjectsComponent';
+import  AboutComponent  from './components/AboutComponent';
 import data from './data.json';
 import './styles.css';
-
-
-
-
-const NavMenu = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const menuItems = [
-    { name: 'Notes', icon: '📝' },
-    { name: 'Etudiants', icon: '👥' },
-    { name: 'Matières', icon: '📚' },
-    { name: 'A propos', icon: 'ℹ️' }
-  ];
-
-  const handleClick = (item) => {
-    alert(`Vous avez cliqué sur ${item}`);
-    setIsOpen(false); 
-  };
-
-  return (
-    <>
-      <div className="nav-container">
-        <button 
-          className={`hamburger-button ${isOpen ? 'active' : ''}`}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-        </button>
-
-        <nav className={`nav-menu ${isOpen ? 'open' : ''}`}>
-          <ul className="menu-list">
-            {menuItems.map((item) => (
-              <li key={item.name} className="menu-item">
-                <button 
-                  onClick={() => handleClick(item.name)}
-                  className="menu-button"
-                >
-                  <span className="menu-icon">{item.icon}</span>
-                  <span className="menu-text">{item.name}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      {isOpen && <div className="overlay" onClick={() => setIsOpen(false)}></div>}
-    </>
-  );
-};
+import { Container, Paper } from '@mui/material';
 
 function Header() {
   return (
@@ -92,61 +44,48 @@ function Footer({  }) {
   );
 }
 
+function App() {
+  const [activeMenu, setActiveMenu] = useState('Notes');
 
+  const menuItems = [
+    { name: 'Notes', component: <NotesComponent data={data} /> },
+    { name: 'Étudiants', component: <StudentsComponent data={data} /> },
+    { name: 'Matières', component: <SubjectsComponent data={data} /> },
+    { name: 'À propos', component: <AboutComponent /> },
+  ];
 
-
-function getRandomItem(list) {
-  const randomIndex = Math.floor(Math.random() * list.length);
-  return list[randomIndex];
-}
-
-function RandomItem() {
-  const [item, setItem] = useState(getRandomItem(data));
-
-  const changeItem = () => {
-    setItem(getRandomItem(data));
+  const getComponent = () => {
+    const activeItem = menuItems.find((item) => item.name === activeMenu);
+    return activeItem ? activeItem.component : null;
   };
 
   return (
-    <div className="card-container">
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">{item.course}</h5>
-          <p className="card-text">
-            {item.student.firstname} {item.student.lastname} - {item.grade}%
-          </p>
-        </div>
-      </div>
-      <button className="btn-random" onClick={changeItem}>
-        Afficher un nouvel élément
-      </button>
-    </div>
+    <Container maxWidth={false} style={{ paddingBottom: '60px' }}>
+      <Header />
+      <MainContent />
+      
+      <nav>
+        <ul>
+          {menuItems.map((item) => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveMenu(item.name)}
+                style={{ fontWeight: activeMenu === item.name ? 'bold' : 'normal' }}
+              >
+                {item.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <main>
+        {getComponent()}
+      </main>
+
+      <Footer />
+    </Container>
   );
 }
 
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-
-
-      <NavMenu />
-
-        <Header />  
-
-        <MainContent />
-
-        <RandomItem />
-
-        <Footer />
-       
-      </div>
-      
-    </>
-  )
-}
-
-export default App
+export default App;
