@@ -79,8 +79,5 @@ Dans cette section, vous allez gérer le contenu des composants liés au menu en
 5. Push
 > Répéter les étapes 1 à 5 pour tous les composants
 
-
-
-
-
  
+### Contribuer : Dakouky El Mestapha
