@@ -1,20 +1,49 @@
-import { useState } from 'react'
-import  NotesComponent from './components/NotesComponent';
-import  StudentsComponent from './components/StudentsComponent';
-import  SubjectsComponent from './components/SubjectsComponent';
-import  AboutComponent  from './components/AboutComponent';
+import { useState } from 'react';
+import { 
+  Drawer, 
+  IconButton, 
+  List, 
+  ListItem, 
+  ListItemIcon, 
+  ListItemText,
+  AppBar,
+  Toolbar,
+  Typography,
+  Box
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  Description as NotesIcon,
+  People as StudentsIcon,
+  Book as SubjectsIcon,
+  Info as AboutIcon
+} from '@mui/icons-material';
+
+import NotesComponent from './components/NotesComponent';
+import StudentsComponent from './components/StudentsComponent';
+import SubjectsComponent from './components/SubjectsComponent';
+import AboutComponent from './components/AboutComponent';
 import data from './data.json';
-import './styles.css';
-import { Container, Paper } from '@mui/material';
+import './index.css';
+import { Styles } from './styles';
+
 
 function Header() {
   return (
-    <header style={{ textAlign: 'center', padding: '20px' }}>
-      <img src="src\assets\logo.png" alt="Logo de la formation" style={{ height: '150px' }} />
-      <h1>Introduction à React</h1>
-      <h2>A la découverte des premières notions de React</h2>
-    </header>
-  )
+    <Box component="header" sx={Styles.header}>
+      <img 
+        src="src/assets/logo.png" 
+        alt="Logo de la formation" 
+        style={{ height: '10rem', width: '10rem', objectFit: 'cover' }} 
+      />
+      <Typography variant="h1" className="header-title">
+        Introduction à React
+      </Typography>
+      <Typography variant="subtitle1" className="header-subtitle">
+        A la découverte des premières notions de React
+      </Typography>
+    </Box>
+  );
 }
 
 function MainContent() {
@@ -27,66 +56,105 @@ function MainContent() {
   const seconds = now.getSeconds().toString().padStart(2, '0');
 
   return (
-    <main style={{ textAlign: 'center', margin: '20px' }}>
-      <p>Bonjour, on est le {day}, {month}, {year} et il est {hours}:{minutes}:{seconds}</p>
-    </main>
+    <Box component="section" sx={{ textAlign: 'center', margin: '20px' }}>
+      <Typography sx={{ color: '#ebe7ef' }}>
+        Bonjour, on est le {day}, {month}, {year} et il est {hours}:{minutes}:{seconds}
+      </Typography>
+    </Box>
   );
 }
 
-function Footer({  }) {
+function Footer() {
   const year = new Date().getFullYear();
- let nom ="Dakouky"
- let prenom = "El Mestapha"
+  const nom = "Dakouky";
+  const prenom = "El Mestapha";
+  
   return (
-    <footer style={{ textAlign: 'center', padding: '20px', position: 'fixed', bottom: '0', width: '100%' }}>
-      <p>© {year} - {prenom} {nom}, Tous droits réservés.</p>
-    </footer>
+    <Box 
+      component="footer" 
+      className="app-footer"
+      sx={{ 
+        textAlign: 'center', 
+        padding: '20px', 
+        position: 'fixed', 
+        bottom: 0, 
+        width: '100%'
+      }}
+    >
+      <Typography>© {year} - {prenom} {nom}, Tous droits réservés.</Typography>
+    </Box>
   );
 }
 
-function App() {
+const App = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('Notes');
 
   const menuItems = [
-    { name: 'Notes', component: <NotesComponent data={data} /> },
-    { name: 'Étudiants', component: <StudentsComponent data={data} /> },
-    { name: 'Matières', component: <SubjectsComponent data={data} /> },
-    { name: 'À propos', component: <AboutComponent /> },
+    { name: 'Notes', icon: <NotesIcon />, component: <NotesComponent data={data} /> },
+    { name: 'Étudiants', icon: <StudentsIcon />, component: <StudentsComponent data={data} /> },
+    { name: 'Matières', icon: <SubjectsIcon />, component: <SubjectsComponent data={data} /> },
+    { name: 'À propos', icon: <AboutIcon />, component: <AboutComponent /> }
   ];
 
-  const getComponent = () => {
-    const activeItem = menuItems.find((item) => item.name === activeMenu);
-    return activeItem ? activeItem.component : null;
+  const handleMenuClick = (menuName) => {
+    setActiveMenu(menuName);
+    setDrawerOpen(false);
   };
 
+  const activeComponent = menuItems.find(item => item.name === activeMenu)?.component;
+
   return (
-    <Container maxWidth={false} style={{ paddingBottom: '60px' }}>
-      <Header />
-      <MainContent />
-      
-      <nav>
-        <ul>
+    <Box sx={{ display: 'flex', minHeight: '100vh', width: '100%' }}> 
+      <AppBar position="fixed" sx={Styles.appBar}>
+        <Toolbar>
+          <IconButton
+            onClick={() => setDrawerOpen(true)}
+            edge="start"
+            sx={{ mr: 2, color: '#ebe7ef' }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div" sx={{ color: '#ebe7ef' }}>
+            Gestion Académique
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer
+      sx={Styles.drawer}
+        anchor="left"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
+        <List sx={{ width: 250, mt: 2 }}>
           {menuItems.map((item) => (
-            <li key={item.name}>
-              <button
-                onClick={() => setActiveMenu(item.name)}
-                style={{ fontWeight: activeMenu === item.name ? 'bold' : 'normal' }}
-              >
-                {item.name}
-              </button>
-            </li>
+            <ListItem 
+              button 
+              key={item.name}
+              onClick={() => handleMenuClick(item.name)}
+              selected={activeMenu === item.name}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItem>
           ))}
-        </ul>
-      </nav>
+        </List>
+      </Drawer>
 
-      <main>
-        {getComponent()}
-      </main>
-
-      <Footer />
-    </Container>
-    
+      <Box
+        component="main"
+        sx={{ ...Styles.mainContent, flexGrow: 1 }}
+      >
+        <Header />
+        <MainContent />
+        <Box className="content-container" sx={{ flex: 1, mb: 4 }}>
+          {activeComponent}
+        </Box>
+        <Footer />
+      </Box>
+    </Box>
   );
-}
+};
 
 export default App;
